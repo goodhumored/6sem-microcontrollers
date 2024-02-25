@@ -1,0 +1,63 @@
+;*******************************************************************
+; *
+; Filename: prog2.asm *
+; Date: 2024/02/25 *
+; File Version: 0 *
+; Author: Nekrasov K.S. *
+; Company: SUAI *
+; Description: lr 1.3 *
+; *
+;*******************************************************************
+x equ 28h
+y equ 29h
+r equ 2ah
+d equ 2bh
+buf equ 2ch
+rez equ 2dh;
+;*******************************************************************
+; Reset Vector
+;*******************************************************************
+RES_VECT CODE 0x0000 ; processor reset vector
+SJMP START ; go to beginning of program
+;*******************************************************************
+; MAIN PROGRAM
+;*******************************************************************
+MAIN_PROG CODE 0x0100
+START:
+
+MOV a,x
+cpl a
+anl a,y
+anl a,d
+MOV buf,a
+
+MOV a,r
+anl a,y
+anl a,d
+orl a,buf
+mov buf,a
+
+mov a,r
+cpl a
+MOV b,x
+anl b,a
+mov a,d
+cpl a
+anl b,a
+mov a,b
+orl a,buf
+mov buf,a
+
+MOV a,y
+cpl a
+mov b,a
+mov a,d
+cpl a
+anl a,b
+orl a,buf
+
+mov rez,a.1
+
+
+SJMP $ ; loop forever
+END

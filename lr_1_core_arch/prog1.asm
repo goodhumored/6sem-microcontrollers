@@ -1,0 +1,45 @@
+;*******************************************************************
+; *
+; Filename: prog1.asm *
+; Date: 2024/02/25 *
+; File Version: 0 *
+; Author: Nekrasov K.S. *
+; Company: SUAI *
+; Description: lr 1.2 *
+; *
+;*******************************************************************
+;*******************************************************************
+; Reset Vector
+;*******************************************************************
+org 0h ; processor reset vector
+ajmp start ; go to beginning of program
+;*******************************************************************
+; MAIN PROGRAM
+;*******************************************************************
+org 100h
+start:
+mov DPTR,#000h ; нач. адрес -> DPTR
+mov A,#0h ; нач. значение -> А
+
+m1: movx @DPTR,A
+inc DPTR
+inc A
+cjne A,#020h,m1
+
+m2: movx @DPTR,A
+inc DPTR
+dec A
+jnz m2
+
+m3: movx @DPTR,A
+inc DPTR
+inc A
+cjne A,#010h,m3
+
+m4: movx @DPTR,A
+inc DPTR
+dec A
+jnz m4
+
+sjmp $ ; loop forever
+END
