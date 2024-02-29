@@ -47,7 +47,7 @@ ind_row1:
   lcall indic_wr
   inc dptr
   mov a, dpl ;младший байт указателя данных
-  cjne a, #0E3h, indic_data_wr1 ;пока не введены 19 символов 1ой строки
+  cjne a, #0d4h, indic_data_wr1 ;пока не введены 19 символов 1ой строки
   
   mov switch, #0 ;RS=0 – команда
   mov bte, #0C0h ;установка адреса первого символа второй строки
@@ -63,7 +63,7 @@ ind_row2:
   lcall indic_wr
   inc dptr
   mov a, dpl
-  cjne a, #0F6h, indic_data_wr2
+  cjne a, #0e1h, indic_data_wr2
   ;E3h+13h=F6h – адр. конца второй стр.
   jmp finish
   ;переход на конец программы
@@ -99,7 +99,7 @@ indic_delay: ;подпрограмма задержки на 40мкс
 
 org 0FD0h ;данные располагаем в памяти программ
 data:
-  db 'it is test example.' ;директива db помещает коды
-  db '0123456789ABCDFI@#$' ;символов в последовательные ячейки памяти программ
+  db '4142'
+  db 'K.S. Nekrasov'
 finish: sjmp $ ;конец программы
 end
