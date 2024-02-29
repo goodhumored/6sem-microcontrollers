@@ -1,7 +1,5 @@
 *.adf
-*.mcu8051ide
 *~
 *.bin
 *.hex
 *.lst
-lr_1_core_arch/lr_1.mcu8051ide
