@@ -24,13 +24,19 @@ org 100h
 start: 
   ; Инициализация ЖКИ
   mov switch, #0  ; переключатель на команду
-  mov bte, #38h   ; ширина ввода и 2 строки
+  mov bte, #020h   ; режим 4-х разрядной шины данных
   lcall write_led ; вызов подпрограммы передачи в ЖКИ
-  mov bte, #0fh   ; активация всех знакомест
+  mov bte, #000h   ; активация всех знакомест
   lcall write_led
-  mov bte, #06h   ; режим автом. перемещения курсора
+  mov bte, #0f0h   ; активация всех знакомест
   lcall write_led
-  mov bte, #88h   ; установка адреса первого символа
+  mov bte, #000h   ; режим автом. перемещения курсора
+  lcall write_led
+  mov bte, #060h   ; режим автом. перемещения курсора
+  lcall write_led
+  mov bte, #080h   ; установка адреса первого символа
+  lcall write_led
+  mov bte, #080h   ; установка адреса первого символа
   lcall write_led
 
   ;вывод строк
@@ -42,12 +48,19 @@ start:
     movc a, @a+dptr
     mov bte, a
     lcall write_led
+    clr a
+    movc a, @a+dptr
+    swap a
+    mov bte, a
+    lcall write_led
     inc dptr
     mov a, dpl ; младший байт указателя данных
     cjne a, #0d4h, row1 ; пока не введены 4 символа 1ой строки
   
   mov switch, #0 ;команда
-  mov bte, #0C4h ;установка адреса первого символа второй строки
+  mov bte, #0C0h ;установка адреса первого символа второй строки
+  lcall write_led
+  mov bte, #040h ;установка адреса первого символа второй строки
   lcall write_led
   mov switch, #1 ;RS=1 - данные
 
@@ -56,13 +69,16 @@ start:
     movc a, @a+dptr
     mov bte, a
     lcall write_led
+    clr a
+    movc a, @a+dptr
+    swap a
+    mov bte, a
+    lcall write_led
     inc dptr
     mov a, dpl
-    cjne a, #0e0h, row2
-  
-  ;d4h+12h=e0h – адр. конца второй стр.
-  jmp finish ;переход на конец программы
-  
+    cjne a, #0e0h, row2 ;d4h+12h=e0h – адр. конца второй стр.
+
+  jmp finish ;переход на конец программы  
 
 write_led: ;подпрограмма передачи в ЖКИ
   mov p2, bte ;передаваемый байт – в Р2
