@@ -26,7 +26,7 @@ start:
   mov switch, #0 ; переключатель уст-ть на команду (RS=0)
   mov bte, #38h  ; байт – команда
   lcall indic_wr ; вызов подпрограммы передачи в ЖКИ
-  mov bte, #0ch  ; активация всех знакомест
+  mov bte, #0fh  ; активация всех знакомест
   lcall indic_wr
   mov bte, #06h  ; режим автом. перемещения курсора
   lcall indic_wr
@@ -71,8 +71,8 @@ ind_row2:
 
 indic_wr: ;подпрограмма передачи в ЖКИ
   mov p2, bte ;передаваемый байт – в Р2
-  setb p1.7   ;E:=1
-  clr p1.6    ;RW:=0 (запись)
+  setb p1.6   ;E:=1
+  clr p1.7    ;RW:=0 (запись)
 
   mov a, switch
   mov c, acc.0 ;нам нужен 0-ой бит аккумулятора
@@ -80,11 +80,11 @@ indic_wr: ;подпрограмма передачи в ЖКИ
 
   lcall indic_delay ;вызов подпрограммы задержки
 
-  clr p1.7 ;E:=0
+  clr p1.6 ;E:=0
 
   lcall indic_delay
 
-  setb p1.7 ;E:=1
+  setb p1.6 ;E:=1
   ret 
 
 indic_delay: ;подпрограмма задержки на 40мкс
